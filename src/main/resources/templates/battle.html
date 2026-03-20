@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="cs" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Pokémon Battle Simulator</title>
+    <style>
+        /* Animace pro obdržení poškození */
+        @keyframes takeDamageShake {
+            0% { background-color: white; transform: translateX(0); }
+            25% { background-color: #ffcdd2; transform: translateX(-5px); }
+            50% { background-color: #ef5350; transform: translateX(5px); }
+            75% { background-color: #ffcdd2; transform: translateX(-5px); }
+            100% { background-color: white; transform: translateX(0); }
+        }
+
+        /* Tuhle třídu budeme přidávat dynamicky */
+        .taking-damage {
+            animation: takeDamageShake 0.5s ease-in-out;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .game-container {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            width: 600px;
+            overflow: hidden;
+        }
+        .arena {
+            background-color: #dcedc8; /* Lehce zelená jako tráva */
+            padding: 30px;
+            position: relative;
+            height: 300px;
+        }
+        .pokemon-card {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            width: 200px;
+            position: absolute;
+        }
+        /* Pozice soupeře (Nahoře vpravo) */
+        .opponent {
+            top: 20px;
+            right: 20px;
+            border: 2px solid #ef5350;
+        }
+        /* Pozice hráče (Dole vlevo) */
+        .player {
+            bottom: 20px;
+            left: 20px;
+            border: 2px solid #42a5f5;
+        }
+        .hp-bar-container {
+            width: 100%;
+            background-color: #e0e0e0;
+            border-radius: 5px;
+            margin-top: 5px;
+            height: 15px;
+            overflow: hidden;
+        }
+        .hp-bar {
+            background-color: #66bb6a;
+            height: 100%;
+            /* Tady bys ideálně počítal % z max HP, pro teď to necháme fixní */
+            width: 100%;
+        }
+        .action-panel {
+            background-color: #424242;
+            padding: 20px;
+        }
+        .moves-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+        .btn-move {
+            background-color: #ffca28;
+            border: none;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .btn-move:hover {
+            background-color: #ffb300;
+            transform: scale(1.02);
+        }
+        .stats {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="game-container">
+    <div class="arena">
+
+        <div class="pokemon-card opponent" th:classappend="${hitTarget == 'opponent'} ? 'taking-damage' : ''">
+            <h3 th:text="${opponent.name}">Soupeř</h3>
+            <img th:src="${opponent.imagePath}" width="100">
+            <div>HP: <span th:text="${opponent.hp}">100</span></div>
+            <div class="hp-bar-container">
+                <div class="hp-bar"></div>
+            </div>
+            <div class="stats">
+                Def: <span th:text="${opponent.defense}">50</span> |
+                Atk: <span th:text="${opponent.dmg}">50</span>
+            </div>
+        </div>
+
+        <div class="pokemon-card player" th:classappend="${hitTarget == 'player'} ? 'taking-damage' : ''">
+            <h3 th:text="${player.name}">Tvůj Pokémon</h3>
+            <img th:src="${player.imagePath}" width="100">
+            <div>HP: <span th:text="${player.hp}">100</span></div>
+            <div class="hp-bar-container">
+                <div class="hp-bar"></div>
+            </div>
+            <div class="stats">
+                Def: <span th:text="${player.defense}">50</span> |
+                Atk: <span th:text="${player.dmg}">50</span>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="action-panel">
+        <form th:action="@{/attack}" method="post">
+            <div class="moves-grid">
+                <button type="submit"
+                        class="btn-move"
+                        th:each="move, stat : ${player.abilities}"
+                        th:if="${move != null}"
+                        name="moveIndex"
+                        th:value="${stat.index}">
+
+                    <span th:text="${move.name}">Název útoku</span>
+                    <br>
+                    <small th:text="'PP: ' + ${move.pp}"></small>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

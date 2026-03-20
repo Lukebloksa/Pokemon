@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+        <meta charset="UTF-8">
+        <title>Výběr Pokémona</title>
+        <style>
+            body {
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                background-color: #f0f0f0;
+                text-align: center;
+                padding: 50px;
+            }
+            .pokemon-grid {
+                display: flex;
+                justify-content: center;
+                gap: 20px;
+                flex-wrap: wrap;
+                margin-top: 30px;
+            }
+            .pokemon-card {
+                background: white;
+                padding: 20px;
+                border-radius: 10px;
+                box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+                width: 200px;
+                border: 2px solid transparent;
+                transition: 0.3s;
+            }
+            .pokemon-card:hover {
+                border-color: #42a5f5;
+                transform: translateY(-5px);
+            }
+            .btn-select {
+                background-color: #42a5f5;
+                color: white;
+                border: none;
+                padding: 10px 20px;
+                border-radius: 5px;
+                cursor: pointer;
+                font-weight: bold;
+                margin-top: 15px;
+                width: 100%;
+            }
+            .btn-select:hover {
+                background-color: #1e88e5;
+            }
+        </style>
+    </head>
+<body>
+
+<h1>Vyber si svého bojovníka! ⚡</h1>
+
+<form th:action="@{/start-battle}" method="post">
+
+    <div class="pokemon-grid">
+        <div th:each="poke, stat : ${roster}" class="pokemon-card">
+
+            <h2 th:text="${poke.name}">Jméno Pokémona</h2>
+            <img th:src="${poke.imagePath}" width="100">
+            <p>HP: <span th:text="${poke.hp}">100</span></p>
+            <p>Útok: <span th:text="${poke.dmg}">50</span></p>
+            <p>Obrana: <span th:text="${poke.defense}">50</span></p>
+
+            <button type="submit" name="selectedIndex" th:value="${stat.index}" class="btn-select">
+                Zvolit
+            </button>
+
+        </div>
+    </div>
+
+</form>
+
+</body>
+</html>
