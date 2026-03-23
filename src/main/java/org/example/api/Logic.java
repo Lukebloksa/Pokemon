@@ -40,6 +40,13 @@ public class Logic {
 
     public Pokemon attack(Pokemon player, Pokemon opponent, int moveIndex) {
         double dmg = (player.getDmg() * player.getAbilities()[moveIndex].getDmgAmplifier())/opponent.getDefense();
+
+        if (opponent.getWeaknesses().contains(player.getAbilities()[moveIndex].getType())) {
+            dmg*=2.0;
+        } else if (opponent.getTypes().contains(player.getAbilities()[moveIndex].getType())) {
+            dmg*=0.5;
+        }
+
         opponent.setHp((int) (opponent.getHp()-dmg));
 
         player.getAbilities()[moveIndex].setPp(player.getAbilities()[moveIndex].getPp()-1);
