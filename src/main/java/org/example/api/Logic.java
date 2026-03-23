@@ -50,12 +50,12 @@ public class Logic {
         return opponent;
     };
 
-    public boolean isGameOver(Pokemon player, Pokemon opponent) {
-        if (opponent.getHp() <= 0 || player.getHp() <= 0) {
-            win(player, opponent);
-            lose(player, opponent);
+    public List<Pokemon> healPokemon(List<Pokemon> player, int index) {
+        player.get(index).setHp(player.get(index).getMaxHp());
+        for (int i = 0; i < player.get(index).getAbilities().length; i++) {
+            player.get(index).getAbilities()[i].setPp(player.get(index).getAbilities()[i].getMaxPp());
         }
-        return false;
+        return player;
     }
 
     public boolean win(Pokemon player, Pokemon opponent) {

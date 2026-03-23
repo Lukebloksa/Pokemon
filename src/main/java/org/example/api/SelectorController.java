@@ -31,4 +31,11 @@ public class SelectorController {
 
         return "redirect:/battle";
     }
+
+    @PostMapping("/heal")
+    public String heal(Model model, @RequestParam int selectedIndex) {
+        logic.healPokemon(logic.pokemons, selectedIndex);
+        model.addAttribute("roster", logic.pokemons);
+        return "pokemonSelector";
+    }
 }

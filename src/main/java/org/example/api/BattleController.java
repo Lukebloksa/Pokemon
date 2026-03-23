@@ -33,12 +33,23 @@ public class BattleController {
 
         model.addAttribute("hitTarget", "opponent");
 
+        if (logic.win(logic.player, logic.opponent)) {
+            model.addAttribute("showVictory", true);
+        }
+        else {
+            logic.attack(logic.opponent, logic.player, 0);
+
+            if (logic.lose(logic.player, logic.opponent)) {
+                model.addAttribute("showGameOver", true);
+            }
+        }
+
         int enemyMoveIndex = rand.nextInt(0, logic.opponent.getAbilities().length);
 
         logic.attack(logic.opponent, logic.player, enemyMoveIndex);
         model.addAttribute("player", logic.player);
-
         model.addAttribute("hitTarget", "player");
+
 
         return "battle";
     }

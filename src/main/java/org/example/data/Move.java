@@ -4,12 +4,14 @@ public class Move {
     private String name;
     private Type type;
     private Double dmgAmplifier;
+    private int maxPp;
     private int pp;
 
-    public Move(String name, Type type, int pp, Double dmgAmplifier) {
+    public Move(String name, Type type, int maxPp, Double dmgAmplifier) {
         this.name = name;
         this.type = type;
-        this.pp = pp;
+        this.maxPp = maxPp;
+        this.pp = maxPp;
         this.dmgAmplifier = dmgAmplifier;
     }
 
@@ -43,5 +45,13 @@ public class Move {
 
     public void setPp(int pp) {
         this.pp = pp;
+    }
+
+    public int getMaxPp() {
+        return maxPp;
+    }
+
+    public void setMaxPp(int maxPp) {
+        this.maxPp = maxPp;
     }
 }

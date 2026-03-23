@@ -10,18 +10,20 @@ public class Pokemon {
     private EnumSet<Type> types;
     private EnumSet<Type> weaknesses;
     private Move[] abilities;
+    private int maxHp;
     private int hp;
     private double defense;
     private int dmg;
     private LinkedList<String> evolutions;
     private int evoStage;
 
-    public Pokemon(String imagePath, int level, String name, EnumSet<Type> types, Move[] abilities, int hp, double defense, int dmg, EnumSet<Type> weaknesses, LinkedList<String> evolutions, int evoStage) {
+    public Pokemon(String imagePath, int level, String name, EnumSet<Type> types, Move[] abilities, int maxHp, double defense, int dmg, EnumSet<Type> weaknesses, LinkedList<String> evolutions, int evoStage) {
         this.level = level;
         this.name = name;
         this.types = types;
         this.abilities = abilities;
-        this.hp = hp;
+        this.maxHp = maxHp;
+        this.hp = maxHp;
         this.defense = defense;
         this.dmg = dmg;
         this.weaknesses = weaknesses;
@@ -120,5 +122,13 @@ public class Pokemon {
 
     public void setImagePath(String imagePath) {
         this.imagePath = imagePath;
+    }
+
+    public int getMaxHp() {
+        return maxHp;
+    }
+
+    public void setMaxHp(int maxHp) {
+        this.maxHp = maxHp;
     }
 }

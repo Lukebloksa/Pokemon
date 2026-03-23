@@ -53,7 +53,7 @@
 
 <h1>Vyber si svého bojovníka! ⚡</h1>
 
-<form th:action="@{/start-battle}" method="post">
+
 
     <div class="pokemon-grid">
         <div th:each="poke, stat : ${roster}" class="pokemon-card">
@@ -64,14 +64,24 @@
             <p>Útok: <span th:text="${poke.dmg}">50</span></p>
             <p>Obrana: <span th:text="${poke.defense}">50</span></p>
 
-            <button type="submit" name="selectedIndex" th:value="${stat.index}" class="btn-select">
-                Zvolit
-            </button>
+            <form th:action="@{/start-battle}" method="post">
+                <input type="hidden" name="selectedIndex" th:value="${stat.index}">
+                <button type="submit" class="btn-select">
+                    Zvolit
+                </button>
+            </form>
+
+            <form action="/heal" method="post">
+                <input type="hidden" name="selectedIndex" th:value="${stat.index}">
+                <button type="submit">
+                    Heal
+                </button>
+            </form>
 
         </div>
     </div>
 
-</form>
+
 
 </body>
 </html>
